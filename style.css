@@ -1,11 +1,38 @@
 body {
-  background-color: #121212;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding-top: 100px;
+background: #0b1220;
+color: white;
+font-family: Arial, sans-serif;
+text-align: center;
 }
 
-h1 {
-  color: #4fc3f7;
+
+header {
+padding: 40px;
+background: #0a1f44;
+}
+
+
+.card {
+background: #111c33;
+margin: 20px auto;
+padding: 20px;
+width: 80%;
+border-radius: 8px;
+}
+
+
+.button, button {
+display: inline-block;
+background: #1e90ff;
+color: white;
+padding: 12px 20px;
+text-decoration: none;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+
+.hidden {
+display: none;
 }

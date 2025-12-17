@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cadet Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<h1>Cadet Management</h1>
+
+
+<div class="card">
+<h2>Authorization</h2>
+<input id="auth" placeholder="Enter FTO Permission Key">
+<button onclick="authorize()">Authorize</button>
+</div>
+
+
+<div class="card hidden" id="cadetPanel">
+<h2>Add New Cadet</h2>
+<input id="cadetName" placeholder="Cadet Name">
+<button onclick="addCadet()">Add Cadet</button>
+
+
+<ul id="cadetList"></ul>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
