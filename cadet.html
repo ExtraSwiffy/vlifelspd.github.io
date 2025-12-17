@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cadet Profile</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<h1 id="name"></h1>
+
+
+<div class="card">
+<h2>Training Checklist</h2>
+
+
+<div class="checklist">
+<label><input type="checkbox" data-item="traffic"> Traffic Stops</label>
+<label><input type="checkbox" data-item="radio"> Radio Procedure</label>
+<label><input type="checkbox" data-item="useOfForce"> Use of Force</label>
+<label><input type="checkbox" data-item="pursuits"> Vehicle Pursuits</label>
+<label><input type="checkbox" data-item="reports"> Report Writing</label>
+<label><input type="checkbox" data-item="scene"> Scene Control</label>
+</div>
+
+
+<p id="progress"></p>
+</div>
+
+
+<div class="card">
+<h2>Certification</h2>
+<p>Status: <span id="status">In Training</span></p>
+<p>Certifying Authority: <strong>L. Hudson</strong></p>
+</div>
+
+
+<script src="script.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const cadetName = params.get('name');
+document.getElementById('name').innerText = cadetName;
+
+
+loadChecklist(cadetName);
+</script>
+
+
+</body>
+</html>
