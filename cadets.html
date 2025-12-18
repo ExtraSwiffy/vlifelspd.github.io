@@ -11,14 +11,24 @@
 
 <div class="card">
   <h2>Authorization</h2>
-  <input id="auth" placeholder="Enter FTO Permission Key">
+  <input id="auth" placeholder="Enter FTO List Access Key">
   <button onclick="authorize()">Authorize</button>
 </div>
 
 <div class="card hidden" id="cadetPanel">
   <h2>Add New Cadet</h2>
-  <input id="cadetName" placeholder="Cadet Name">
+
+  <input
+    id="cadetName"
+    placeholder="Cadet Number (ex: 530)"
+    inputmode="numeric"
+  >
+
   <button onclick="addCadet()">Add Cadet</button>
+
+  <hr style="margin:15px 0; opacity:0.3;">
+
+  <h3>Active Cadets</h3>
   <ul id="cadetList"></ul>
 </div>
 
@@ -41,5 +51,6 @@ const db = firebase.firestore();
 </script>
 
 <script src="script.js"></script>
+
 </body>
 </html>
