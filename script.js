@@ -162,3 +162,11 @@ function certifyCadet() {
     alert("Error certifying cadet.");
   });
 }
+
+
+// Expose functions globally for HTML buttons
+window.authorize = authorize;
+window.addCadet = addCadet;
+window.deleteCadet = deleteCadet;
+window.certifyCadet = certifyCadet;
+
