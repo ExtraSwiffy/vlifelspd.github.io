@@ -54,5 +54,20 @@ border-radius: 5px;
 cursor: pointer;
 }
 
+button.danger {
+  background: #b00020;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+button.danger:hover {
+  background: #8a0018;
+}
+
+
 
 .hidden { display: none; }
+
