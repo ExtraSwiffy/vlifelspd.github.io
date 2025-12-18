@@ -1,7 +1,7 @@
 /* ================= PERMISSION KEYS ================= */
-const LIST_KEY   = "LSPD-FTO-2025";        // Access cadet list
-const DELETE_KEY = "LSPD-DELETE-2025";     // Delete cadet
-const CERTIFY_KEY = "LSPD-CERT-2025";      // Certify cadet
+const LIST_KEY    = "LSPD-FTO-2025";        // Access cadet list
+const DELETE_KEY  = "LSPD-DELETE-2025";     // Delete cadet
+const CERTIFY_KEY = "LSPD-CERT-2025";       // Certify cadet
 
 let authorized = false;
 
@@ -30,7 +30,6 @@ function addCadet() {
     return;
   }
 
-  // Extract the number at the start
   const numberMatch = fullName.match(/^(\d+)/);
   if (!numberMatch) {
     alert("Cadet name must start with a number (ex: 530 | CDT | L. Hudson)");
@@ -41,7 +40,7 @@ function addCadet() {
 
   db.collection("cadets").doc(fullName).set({
     name: fullName,
-    number: number, // numeric sort field
+    number: number,
     checklist: {},
     status: "In Training",
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -60,13 +59,7 @@ function listenForCadets() {
       snapshot.forEach(doc => {
         const data = doc.data();
         const li = document.createElement("li");
-
-        li.innerHTML = `
-          <a href="cadet.html?name=${encodeURIComponent(data.name)}">
-            ${data.name}
-          </a>
-        `;
-
+        li.innerHTML = `<a href="cadet.html?name=${encodeURIComponent(data.name)}">${data.name}</a>`;
         list.appendChild(li);
       });
     });
@@ -78,7 +71,6 @@ function loadChecklist(cadet) {
 
   db.collection("cadets").doc(cadet).onSnapshot(doc => {
     if (!doc.exists) return;
-
     const docData = doc.data();
     const data = docData.checklist || {};
 
@@ -94,22 +86,16 @@ function loadChecklist(cadet) {
 function saveChecklist(cadet) {
   const boxes = document.querySelectorAll(".checklist input");
   let data = {};
+  boxes.forEach(box => data[box.dataset.item] = box.checked);
 
-  boxes.forEach(box => {
-    data[box.dataset.item] = box.checked;
-  });
-
-  db.collection("cadets").doc(cadet).update({
-    checklist: data
-  });
+  db.collection("cadets").doc(cadet).update({ checklist: data });
 }
 
 function updateProgress(data, status) {
   const total = Object.keys(data).length;
   const done = Object.values(data).filter(v => v).length;
 
-  document.getElementById("progress").innerText =
-    `Progress: ${done} / ${total}`;
+  document.getElementById("progress").innerText = `Progress: ${done} / ${total}`;
 
   if (status === "Certified") {
     document.getElementById("status").innerText = "CERTIFIED";
@@ -122,9 +108,13 @@ function updateProgress(data, status) {
 
 /* ================= DELETE CADET ================= */
 function deleteCadet() {
-  if (!confirm("Are you sure you want to permanently delete this cadet?")) {
+  const keyInput = document.getElementById("deleteKey").value.trim();
+  if (keyInput !== DELETE_KEY) {
+    alert("Invalid Delete Key");
     return;
   }
+
+  if (!confirm("Are you sure you want to permanently delete this cadet?")) return;
 
   const params = new URLSearchParams(window.location.search);
   const cadetName = params.get("name");
@@ -142,6 +132,12 @@ function deleteCadet() {
 
 /* ================= CERTIFY CADET ================= */
 function certifyCadet() {
+  const keyInput = document.getElementById("certifyKey").value.trim();
+  if (keyInput !== CERTIFY_KEY) {
+    alert("Invalid Certification Key");
+    return;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const cadetName = params.get("name");
 
