@@ -88,26 +88,35 @@ function updateProgress(data) {
 }
 
 function deleteCadet() {
-  const key = document.getElementById("deleteKey").value;
+  const key = document.getElementById("deleteKey").value.trim();
   if (key !== PERMISSION_KEY) {
     alert("Invalid FTO Permission Key");
     return;
   }
 
-  if (!confirm("Are you sure you want to permanently delete this cadet?")) {
+  const params = new URLSearchParams(window.location.search);
+  let cadetName = params.get("name");
+
+  if (!cadetName) {
+    alert("Cadet name not found in URL!");
     return;
   }
 
-  const params = new URLSearchParams(window.location.search);
-  const cadetName = params.get("name");
+  // Decode in case URL has spaces or special characters
+  cadetName = decodeURIComponent(cadetName);
+
+  if (!confirm(`Are you sure you want to permanently delete cadet: ${cadetName}?`)) {
+    return;
+  }
 
   db.collection("cadets").doc(cadetName).delete()
     .then(() => {
-      alert("Cadet deleted successfully.");
+      alert(`Cadet "${cadetName}" deleted successfully.`);
       window.location.href = "cadets.html";
     })
     .catch(err => {
-      alert("Error deleting cadet.");
-      console.error(err);
+      alert("Error deleting cadet. See console for details.");
+      console.error("Delete error:", err);
     });
 }
+
