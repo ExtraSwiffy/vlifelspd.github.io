@@ -4,7 +4,7 @@ let authorized = false;
 /* ================= AUTH ================= */
 function authorize() {
   const key = document.getElementById("auth").value;
-  if (key === PERMISSION_KEY) {
+  if (key === LIST_KEY) {
     authorized = true;
     document.getElementById("cadetPanel").classList.remove("hidden");
     listenForCadets();
