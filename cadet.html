@@ -35,7 +35,7 @@
   <p>Delete Cadet:</p>
   <input type="text" id="deleteKey" placeholder="Enter Delete Key" style="width: 70%; padding: 8px; margin-bottom: 10px;">
   <br>
-  <button onclick="deleteCadetWithKey()">Delete Cadet</button>
+  <button onclick="deleteCadet()">Delete Cadet</button>
 
   <hr style="margin: 20px 0; border-color: rgba(255,255,255,0.2)">
 
@@ -43,7 +43,7 @@
   <p>Certify Cadet:</p>
   <input type="text" id="certifyKey" placeholder="Enter Certify Key" style="width: 70%; padding: 8px; margin-bottom: 10px;">
   <br>
-  <button onclick="certifyCadetWithKey()">Certify Cadet</button>
+  <button onclick="certifyCadet()">Certify Cadet</button>
 </div>
 
 <!-- Firebase -->
@@ -70,21 +70,6 @@ const params = new URLSearchParams(window.location.search);
 const cadetName = params.get("name");
 document.getElementById("name").innerText = cadetName;
 loadChecklist(cadetName);
-
-// Wrappers for separate key inputs
-function deleteCadetWithKey() {
-  const key = document.getElementById("deleteKey").value;
-  deleteCadet(key);
-}
-
-function certifyCadetWithKey() {
-  const key = document.getElementById("certifyKey").value;
-  certifyCadet(key);
-}
-
-// Expose wrapper functions globally
-window.deleteCadetWithKey = deleteCadetWithKey;
-window.certifyCadetWithKey = certifyCadetWithKey;
 </script>
 
 </body>
