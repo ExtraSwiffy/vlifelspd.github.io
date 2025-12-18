@@ -120,3 +120,8 @@ function deleteCadet() {
     });
 }
 
+function normalizeCadetID(name) {
+  // Trim, lowercase, replace spaces with underscores, remove special chars
+  return name.trim().toLowerCase().replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
+}
+
