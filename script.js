@@ -1,80 +1,88 @@
 const PERMISSION_KEY = "LSPD-FTO-2025";
-let cadets = JSON.parse(localStorage.getItem("cadets")) || [];
+let authorized = false;
 
-
+/* ================= AUTH ================= */
 function authorize() {
-const key = document.getElementById("auth").value;
-if (key === PERMISSION_KEY) {
-document.getElementById("cadetPanel").classList.remove("hidden");
-renderCadets();
-} else alert("Invalid Permission");
+  const key = document.getElementById("auth").value;
+  if (key === PERMISSION_KEY) {
+    authorized = true;
+    document.getElementById("cadetPanel").classList.remove("hidden");
+    listenForCadets();
+  } else {
+    alert("Invalid Permission");
+  }
 }
 
-
+/* ================= CADETS ================= */
 function addCadet() {
-const name = document.getElementById("cadetName").value.trim();
-if (!name) return;
+  if (!authorized) return;
 
+  const name = document.getElementById("cadetName").value.trim();
+  if (!name) return;
 
-cadets.push(name);
-localStorage.setItem("cadets", JSON.stringify(cadets));
-document.getElementById("cadetName").value = "";
-renderCadets();
+  db.collection("cadets").doc(name).set({
+    name: name,
+    checklist: {},
+    status: "In Training",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  document.getElementById("cadetName").value = "";
 }
 
+function listenForCadets() {
+  db.collection("cadets").orderBy("createdAt").onSnapshot(snapshot => {
+    const list = document.getElementById("cadetList");
+    list.innerHTML = "";
 
-function renderCadets() {
-const list = document.getElementById("cadetList");
-list.innerHTML = "";
-
-
-cadets.forEach(name => {
-const li = document.createElement("li");
-li.innerHTML = `<a href="cadet.html?name=${encodeURIComponent(name)}">${name}</a>`;
-list.appendChild(li);
-});
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="cadet.html?name=${encodeURIComponent(data.name)}">${data.name}</a>`;
+      list.appendChild(li);
+    });
+  });
 }
 
-
-/* === CHECKLIST STORAGE === */
+/* ================= CHECKLIST ================= */
 function loadChecklist(cadet) {
-const saved = JSON.parse(localStorage.getItem(`checklist_${cadet}`)) || {};
-const boxes = document.querySelectorAll(".checklist input");
+  const boxes = document.querySelectorAll(".checklist input");
 
+  db.collection("cadets").doc(cadet).onSnapshot(doc => {
+    if (!doc.exists) return;
 
-boxes.forEach(box => {
-box.checked = saved[box.dataset.item] || false;
-box.addEventListener("change", () => saveChecklist(cadet));
-});
+    const data = doc.data().checklist || {};
 
+    boxes.forEach(box => {
+      box.checked = data[box.dataset.item] || false;
+      box.onchange = () => saveChecklist(cadet);
+    });
 
-updateProgress(cadet);
+    updateProgress(data);
+  });
 }
-
 
 function saveChecklist(cadet) {
-const boxes = document.querySelectorAll(".checklist input");
-let data = {};
+  const boxes = document.querySelectorAll(".checklist input");
+  let data = {};
 
+  boxes.forEach(box => {
+    data[box.dataset.item] = box.checked;
+  });
 
-boxes.forEach(box => data[box.dataset.item] = box.checked);
-localStorage.setItem(`checklist_${cadet}`, JSON.stringify(data));
-
-
-updateProgress(cadet);
+  db.collection("cadets").doc(cadet).update({
+    checklist: data
+  });
 }
 
+function updateProgress(data) {
+  const total = Object.keys(data).length;
+  const done = Object.values(data).filter(v => v).length;
 
-function updateProgress(cadet) {
-const data = JSON.parse(localStorage.getItem(`checklist_${cadet}`)) || {};
-const total = Object.keys(data).length;
-const done = Object.values(data).filter(v => v).length;
+  document.getElementById("progress").innerText =
+    `Progress: ${done} / ${total}`;
 
-
-const progress = document.getElementById("progress");
-const status = document.getElementById("status");
-
-
-progress.innerText = `Progress: ${done} / ${total}`;
-if (total > 0 && done === total) status.innerText = "READY FOR CERTIFICATION";
+  if (total > 0 && done === total) {
+    document.getElementById("status").innerText = "READY FOR CERTIFICATION";
+  }
 }
