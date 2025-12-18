@@ -28,6 +28,24 @@
   <p>Certifying Authority: <strong>L. Hudson</strong></p>
 </div>
 
+<div class="card">
+  <h2>Actions</h2>
+
+  <!-- Delete Cadet -->
+  <p>Delete Cadet:</p>
+  <input type="text" id="deleteKey" placeholder="Enter Delete Key" style="width: 70%; padding: 8px; margin-bottom: 10px;">
+  <br>
+  <button onclick="deleteCadetWithKey()">Delete Cadet</button>
+
+  <hr style="margin: 20px 0; border-color: rgba(255,255,255,0.2)">
+
+  <!-- Certify Cadet -->
+  <p>Certify Cadet:</p>
+  <input type="text" id="certifyKey" placeholder="Enter Certify Key" style="width: 70%; padding: 8px; margin-bottom: 10px;">
+  <br>
+  <button onclick="certifyCadetWithKey()">Certify Cadet</button>
+</div>
+
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -52,6 +70,21 @@ const params = new URLSearchParams(window.location.search);
 const cadetName = params.get("name");
 document.getElementById("name").innerText = cadetName;
 loadChecklist(cadetName);
+
+// Wrappers for separate key inputs
+function deleteCadetWithKey() {
+  const key = document.getElementById("deleteKey").value;
+  deleteCadet(key);
+}
+
+function certifyCadetWithKey() {
+  const key = document.getElementById("certifyKey").value;
+  certifyCadet(key);
+}
+
+// Expose wrapper functions globally
+window.deleteCadetWithKey = deleteCadetWithKey;
+window.certifyCadetWithKey = certifyCadetWithKey;
 </script>
 
 </body>
