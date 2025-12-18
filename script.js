@@ -1,5 +1,7 @@
-const PERMISSION_KEY = "LSPD-FTO-2025";
-let authorized = false;
+const LIST_KEY = "LSPD-FTO-2025";        // access cadet list
+const DELETE_KEY = "LSPD-DELETE-2025";  // delete cadet
+const CERTIFY_KEY = "LSPD-CERT-2025";   // certify cadet
+
 
 /* ================= AUTH ================= */
 function authorize() {
