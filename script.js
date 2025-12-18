@@ -1,12 +1,10 @@
-const LIST_KEY = "LSPD-FTO-2025";        // access cadet list
-const DELETE_KEY = "LSPD-DELETE-2025";  // delete cadet
-const CERTIFY_KEY = "LSPD-CERT-2025";   // certify cadet
-
+const PERMISSION_KEY = "LSPD-FTO-2025";
+let authorized = false;
 
 /* ================= AUTH ================= */
 function authorize() {
   const key = document.getElementById("auth").value;
-  if (key === LIST_KEY) {
+  if (key === PERMISSION_KEY) {
     authorized = true;
     document.getElementById("cadetPanel").classList.remove("hidden");
     listenForCadets();
@@ -14,7 +12,6 @@ function authorize() {
     alert("Invalid Permission");
   }
 }
-
 /* ================= CADETS ================= */
 function addCadet() {
   if (!authorized) return;
