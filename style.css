@@ -59,12 +59,9 @@ cursor: pointer;
 .card-image {
   width: 100%;
   max-width: 500px;
-  max-height: 300px;      /* 👈 THIS FIXES IT */
-  object-fit: contain;    /* Keeps full image visible */
-  display: block;
-  margin: 15px auto 0;
+  height: 260px;
+  object-fit: cover; /* Crops nicely */
   border-radius: 8px;
-  border: 2px solid rgba(255,255,255,0.15);
 }
 
 
@@ -72,5 +69,7 @@ cursor: pointer;
 
 
 
+
 .hidden { display: none; }
+
 
