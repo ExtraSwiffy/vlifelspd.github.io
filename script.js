@@ -2,16 +2,7 @@ const PERMISSION_KEY = "LSPD-FTO-2025";
 let authorized = false;
 
 /* ================= AUTH ================= */
-function authorize() {
-  const key = document.getElementById("auth").value;
-  if (key === PERMISSION_KEY) {
-    authorized = true;
-    document.getElementById("cadetPanel").classList.remove("hidden");
-    listenForCadets();
-  } else {
-    alert("Invalid Permission");
-  }
-}
+function authorize() { const key = document.getElementById("auth").value; if (key === PERMISSION_KEY) { authorized = true; document.getElementById("cadetPanel").classList.remove("hidden"); listenForCadets(); } else { alert("Invalid Permission"); } }
 /* ================= CADETS ================= */ function addCadet() { if (!authorized) return; const name = document.getElementById("cadetName").value.trim(); if (!name) return; db.collection("cadets").doc(name).set({ name: name, checklist: {}, status: "In Training", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); document.getElementById("cadetName").value = ""; } function listenForCadets() { db.collection("cadets").orderBy("createdAt").onSnapshot(snapshot => { const list = document.getElementById("cadetList"); list.innerHTML = ""; snapshot.forEach(doc => { const data = doc.data(); const li = document.createElement("li"); li.innerHTML = <a href="cadet.html?name=${encodeURIComponent(data.name)}">${data.name}</a>; list.appendChild(li); }); }); }
 /* ================= CHECKLIST ================= */
 function loadChecklist(cadet) {
