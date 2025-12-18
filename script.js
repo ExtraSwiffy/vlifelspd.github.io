@@ -12,50 +12,7 @@ function authorize() {
     alert("Invalid Permission");
   }
 }
-/* ================= CADETS ================= */
-function addCadet() {
-  if (!authorized) return;
-
-  const nameInput = document.getElementById("cadetName");
-  const name = nameInput.value.trim();
-  const number = parseInt(name, 10);
-
-  if (!name || isNaN(number)) {
-    alert("Cadet name must be a number (ex: 530)");
-    return;
-  }
-
-  db.collection("cadets").doc(name).set({
-    name: name,
-    number: number, // 👈 numeric field for sorting
-    checklist: {},
-    status: "In Training",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  nameInput.value = "";
-}
-
-function listenForCadets() {
-  db.collection("cadets")
-    .orderBy("number") // 👈 numeric sort
-    .onSnapshot(snapshot => {
-      const list = document.getElementById("cadetList");
-      list.innerHTML = "";
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <a href="cadet.html?name=${encodeURIComponent(data.name)}">
-            ${data.name}
-          </a>
-        `;
-        list.appendChild(li);
-      });
-    });
-}
-
+/* ================= CADETS ================= */ function addCadet() { if (!authorized) return; const name = document.getElementById("cadetName").value.trim(); if (!name) return; db.collection("cadets").doc(name).set({ name: name, checklist: {}, status: "In Training", createdAt: firebase.firestore.FieldValue.serverTimestamp() }); document.getElementById("cadetName").value = ""; } function listenForCadets() { db.collection("cadets").orderBy("createdAt").onSnapshot(snapshot => { const list = document.getElementById("cadetList"); list.innerHTML = ""; snapshot.forEach(doc => { const data = doc.data(); const li = document.createElement("li"); li.innerHTML = <a href="cadet.html?name=${encodeURIComponent(data.name)}">${data.name}</a>; list.appendChild(li); }); }); }
 /* ================= CHECKLIST ================= */
 function loadChecklist(cadet) {
   const boxes = document.querySelectorAll(".checklist input");
