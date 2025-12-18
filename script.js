@@ -7,7 +7,7 @@ let authorized = false;
 
 /* ================= AUTH ================= */
 function authorize() {
-  const key = document.getElementById("auth").value;
+  const key = document.getElementById("auth").value.trim();
 
   if (key === LIST_KEY) {
     authorized = true;
@@ -122,12 +122,6 @@ function updateProgress(data, status) {
 
 /* ================= DELETE CADET ================= */
 function deleteCadet() {
-  const key = document.getElementById("actionKey").value;
-  if (key !== DELETE_KEY) {
-    alert("Invalid Delete Key");
-    return;
-  }
-
   if (!confirm("Are you sure you want to permanently delete this cadet?")) {
     return;
   }
@@ -148,12 +142,6 @@ function deleteCadet() {
 
 /* ================= CERTIFY CADET ================= */
 function certifyCadet() {
-  const key = document.getElementById("actionKey").value;
-  if (key !== CERTIFY_KEY) {
-    alert("Invalid Certification Key");
-    return;
-  }
-
   const params = new URLSearchParams(window.location.search);
   const cadetName = params.get("name");
 
@@ -171,10 +159,8 @@ function certifyCadet() {
   });
 }
 
-
-// Expose functions globally for HTML buttons
+/* ================= GLOBAL ================= */
 window.authorize = authorize;
 window.addCadet = addCadet;
 window.deleteCadet = deleteCadet;
 window.certifyCadet = certifyCadet;
-
