@@ -86,3 +86,28 @@ function updateProgress(data) {
     document.getElementById("status").innerText = "READY FOR CERTIFICATION";
   }
 }
+
+function deleteCadet() {
+  const key = document.getElementById("deleteKey").value;
+  if (key !== PERMISSION_KEY) {
+    alert("Invalid FTO Permission Key");
+    return;
+  }
+
+  if (!confirm("Are you sure you want to permanently delete this cadet?")) {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const cadetName = params.get("name");
+
+  db.collection("cadets").doc(cadetName).delete()
+    .then(() => {
+      alert("Cadet deleted successfully.");
+      window.location.href = "cadets.html";
+    })
+    .catch(err => {
+      alert("Error deleting cadet.");
+      console.error(err);
+    });
+}
