@@ -7,26 +7,38 @@
 </head>
 <body>
 
-
 <h1>Cadet Management</h1>
 
-
 <div class="card">
-<h2>Authorization</h2>
-<input id="auth" placeholder="Enter FTO Permission Key">
-<button onclick="authorize()">Authorize</button>
+  <h2>Authorization</h2>
+  <input id="auth" placeholder="Enter FTO Permission Key">
+  <button onclick="authorize()">Authorize</button>
 </div>
-
 
 <div class="card hidden" id="cadetPanel">
-<h2>Add New Cadet</h2>
-<input id="cadetName" placeholder="Cadet Name">
-<button onclick="addCadet()">Add Cadet</button>
-
-
-<ul id="cadetList"></ul>
+  <h2>Add New Cadet</h2>
+  <input id="cadetName" placeholder="Cadet Name">
+  <button onclick="addCadet()">Add Cadet</button>
+  <ul id="cadetList"></ul>
 </div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB_Q_0le_KQ_hg1JZa4xOUqUS7_n97pWe4",
+  authDomain: "vlife-lspd.firebaseapp.com",
+  projectId: "vlife-lspd",
+  storageBucket: "vlife-lspd.firebasestorage.app",
+  messagingSenderId: "370736191226",
+  appId: "1:370736191226:web:a40f132876cdc629e49b43"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
 
 <script src="script.js"></script>
 </body>
