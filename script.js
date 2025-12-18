@@ -23,16 +23,24 @@ function addCadet() {
   if (!authorized) return;
 
   const input = document.getElementById("cadetName");
-  const name = input.value.trim();
-  const number = parseInt(name, 10);
+  const fullName = input.value.trim();
 
-  if (!name || isNaN(number)) {
-    alert("Cadet name must be a number (ex: 530)");
+  if (!fullName) {
+    alert("Cadet name cannot be empty");
     return;
   }
 
-  db.collection("cadets").doc(name).set({
-    name: name,
+  // Extract the number at the start
+  const numberMatch = fullName.match(/^(\d+)/);
+  if (!numberMatch) {
+    alert("Cadet name must start with a number (ex: 530 | CDT | L. Hudson)");
+    return;
+  }
+
+  const number = parseInt(numberMatch[1], 10);
+
+  db.collection("cadets").doc(fullName).set({
+    name: fullName,
     number: number, // numeric sort field
     checklist: {},
     status: "In Training",
