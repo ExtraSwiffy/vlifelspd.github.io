@@ -73,3 +73,32 @@ cursor: pointer;
 .hidden { display: none; }
 
 
+
+/* NAV BAR */
+.navbar {
+  background: #08172e;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.navbar a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.navbar a:hover {
+  color: #1e90ff;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 40px;
+  padding: 15px;
+  font-size: 14px;
+  opacity: 0.7;
+}
